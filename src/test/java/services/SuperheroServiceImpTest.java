@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import repository.SuperheroRepository;
 import service.SuperheroServiceImp;
@@ -19,15 +20,16 @@ import static org.mockito.Mockito.when;
  * @author Agustin Perez Garcia
  *
  */
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class SuperheroServiceImpTest {
 
     @InjectMocks
     private SuperheroServiceImp superHeroesServiceImp;
 
-    private List<Superhero> superheroList;
-
+    @Mock
     private SuperheroRepository superheroRepository;
+
+    private List<Superhero> superheroList;
 
     @Before
     public void preloadDate() {
@@ -44,6 +46,6 @@ public class SuperheroServiceImpTest {
     public void getValidFileredHeroByName() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
         List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("man");
-        Assert.assertEquals(resultSuperHeroList.size(), 2);
+        Assert.assertEquals(resultSuperHeroList.size(), 3);
     }
 }
