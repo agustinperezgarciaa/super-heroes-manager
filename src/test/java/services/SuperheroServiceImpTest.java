@@ -43,7 +43,7 @@ public class SuperheroServiceImpTest {
     }
 
     @Test
-    public void getValidFileredHeroByName() {
+    public void getValidFileredHeroByNameAllResults() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
         List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("man");
         Assert.assertEquals(resultSuperHeroList.size(), 3);
