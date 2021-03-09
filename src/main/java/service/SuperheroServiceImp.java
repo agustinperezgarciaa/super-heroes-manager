@@ -13,6 +13,13 @@ public class SuperheroServiceImp {
 
     public List<Superhero> filterHeroByName(String nameFilter) {
         List<Superhero> superheroList = superheroRepository.findAll();
+        for (int i = 0; i < superheroList.size(); i++) {
+            if (!superheroList.get(i).getName().contains(nameFilter)) {
+                System.out.println(superheroList.get(i).getName());
+                superheroList.remove(i);
+                i --;
+            }
+        }
         return superheroList;
     }
 

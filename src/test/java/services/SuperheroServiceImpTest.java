@@ -1,6 +1,7 @@
 package services;
 
 import model.Superhero;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,17 +30,20 @@ public class SuperheroServiceImpTest {
     @Mock
     private SuperheroRepository superheroRepository;
 
-    private List<Superhero> superheroList;
+    private List<Superhero> superheroList = new ArrayList<Superhero>();
 
     @Before
     public void preloadDate() {
         Superhero hero1 = new Superhero("Superman");
         Superhero hero2 = new Superhero("Batman");
         Superhero hero3 = new Superhero("Wonderwoman");
-        superheroList = new ArrayList<Superhero>();
         superheroList.add(hero1);
         superheroList.add(hero2);
         superheroList.add(hero3);
+    }
+    @After
+    public void cleanData() {
+        superheroList = new ArrayList<Superhero>();
     }
 
     @Test
