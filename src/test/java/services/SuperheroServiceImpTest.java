@@ -59,4 +59,18 @@ public class SuperheroServiceImpTest {
         List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("woman");
         Assert.assertEquals(resultSuperHeroList.size(), 1);
     }
+
+    @Test
+    public void getValidFileredHeroByNameNoResult() {
+        when(superheroRepository.findAll()).thenReturn(superheroList);
+        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("ironman");
+        Assert.assertEquals(resultSuperHeroList.size(), 0);
+    }
+
+    @Test
+    public void getValidFileredHeroByNameUppercase() {
+        when(superheroRepository.findAll()).thenReturn(superheroList);
+        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("bat");
+        Assert.assertEquals(resultSuperHeroList.size(), 1);
+    }
 }
