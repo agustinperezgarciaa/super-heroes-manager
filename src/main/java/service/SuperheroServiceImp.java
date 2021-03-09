@@ -16,7 +16,7 @@ public class SuperheroServiceImp {
         List<Superhero> superheroList = superheroRepository.findAll();
         List<Superhero> superheroListFiltered = new ArrayList<Superhero>();
         for (Superhero superhero: superheroList) {
-            if (superhero.getName().contains(nameFilter)) {
+            if (superhero.getName().toLowerCase().contains(nameFilter)) {
                 superheroListFiltered.add(superhero);
             }
         }
