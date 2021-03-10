@@ -1,6 +1,7 @@
-package service;
+package superheroManager.service;
 
-import model.Superhero;
+
+import superheroManager.model.Superhero;
 
 import java.util.List;
 import java.util.Optional;

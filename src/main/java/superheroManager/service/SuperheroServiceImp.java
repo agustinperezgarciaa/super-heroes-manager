@@ -1,13 +1,15 @@
-package service;
+package superheroManager.service;
 
-import model.Superhero;
 import org.springframework.beans.factory.annotation.Autowired;
-import repository.SuperheroRepository;
+import org.springframework.stereotype.Service;
+import superheroManager.model.Superhero;
+import superheroManager.repository.SuperheroRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class SuperheroServiceImp implements SuperheroService {
 
     @Autowired
@@ -35,7 +37,7 @@ public class SuperheroServiceImp implements SuperheroService {
     public String deleteSuperHero(Long id) {
         if (superheroRepository.findById(id).isPresent()) {
             superheroRepository.deleteById(id);
-            return "Superhero deleted.";
+            return "SuperheroManager.model.Superhero deleted.";
         }
         return "Error! The superhero doesn't exist";
     }
@@ -47,7 +49,7 @@ public class SuperheroServiceImp implements SuperheroService {
             superheroToUpdate.setId(superheroToUpdate.getId());
             superheroToUpdate.setName(superheroToUpdate.getName());
             superheroRepository.save(superheroToUpdate);
-            return "Superhero modified";
+            return "SuperheroManager.model.Superhero modified";
         }
         return "Error! The superhoero doesn't exist";
     }

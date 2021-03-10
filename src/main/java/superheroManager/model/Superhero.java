@@ -1,4 +1,4 @@
-package model;
+package superheroManager.model;
 
 import javax.persistence.*;
 

@@ -1,8 +1,8 @@
-package repository;
+package superheroManager.repository;
 
-import model.Superhero;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import superheroManager.model.Superhero;
 
 /**
  * @author Agustin Perez Garcia

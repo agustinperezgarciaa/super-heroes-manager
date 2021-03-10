@@ -1,6 +1,6 @@
 package services;
 
-import model.Superhero;
+import superheroManager.model.Superhero;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -9,8 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import repository.SuperheroRepository;
-import service.SuperheroServiceImp;
+import superheroManager.repository.SuperheroRepository;
+import superheroManager.service.SuperheroServiceImp;
 
 import java.util.ArrayList;
 import java.util.List;
