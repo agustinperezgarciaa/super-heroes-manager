@@ -17,6 +17,9 @@ public class Superhero {
     @Column(nullable = false)
     private String name;
 
+    public Superhero (){
+    }
+
     public Superhero (String name){
         this.name = name;
     }

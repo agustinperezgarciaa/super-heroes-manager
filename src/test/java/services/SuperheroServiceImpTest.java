@@ -72,5 +72,6 @@ public class SuperheroServiceImpTest {
         when(superheroRepository.findAll()).thenReturn(superheroList);
         List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("bat");
         Assert.assertEquals(resultSuperHeroList.size(), 1);
+        Assert.assertEquals(resultSuperHeroList.size(), 1);
     }
 }
