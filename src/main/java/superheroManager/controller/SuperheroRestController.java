@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -32,6 +33,7 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
 
     @GetMapping("/getHeroes")
     @LogExecutedTime
+    @Cacheable("get-herores")
     public ResponseEntity getHeroes() {
         List<Superhero> superheroes = superheroService.getHeroes();
 
@@ -40,6 +42,7 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
 
     @GetMapping("/getHero")
     @LogExecutedTime
+    @Cacheable("get-hero")
     public ResponseEntity getHero(@RequestParam Long id) {
         Optional<Superhero> superheroe = superheroService.getSuperHero(id);
         if (!superheroe.isPresent()) {
@@ -50,13 +53,16 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
 
     @GetMapping("/getFilteredHeroes")
     @LogExecutedTime
+    @Cacheable("filter-hero")
     public ResponseEntity getFilteredHeroes(@RequestParam String filter) {
+        System.out.println("222");
         List<Superhero> superheroes = superheroService.filterHeroByName(filter);
         return ResponseEntity.ok(superheroes);
     }
 
     @PutMapping("/updateHero")
     @LogExecutedTime
+    @Cacheable("update-hero")
     public ResponseEntity updateHero(@RequestBody Superhero superhero) {
         String response = superheroService.updateSuperHero(superhero);
         return ResponseEntity.ok(response);
@@ -64,6 +70,7 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
 
     @DeleteMapping("/deleteHero")
     @LogExecutedTime
+    @Cacheable("delete-hero")
     public ResponseEntity deleteHero(@RequestParam Long id) {
         String response = superheroService.deleteSuperHero(id);
         return ResponseEntity.ok(response);

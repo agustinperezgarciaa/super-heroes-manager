@@ -1,6 +1,5 @@
 package superheroManager.service;
 
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import superheroManager.model.Superhero;
@@ -51,7 +50,7 @@ public class SuperheroServiceImp implements SuperheroService {
             superheroRepository.save(superHeroUpdate);
             return "Superhero modified";
         }
-        return "Error! The superhoero doesn't exist";
+        return "Error! The superhero doesn't exist";
     }
 
     private List<Superhero> getAllHeroes() {
