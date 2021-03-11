@@ -1,5 +1,6 @@
 package superheroManager.service;
 
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import superheroManager.model.Superhero;
@@ -45,11 +46,10 @@ public class SuperheroServiceImp implements SuperheroService {
     public String updateSuperHero(Superhero superHeroUpdate) {
         Long id = superHeroUpdate.getId();
         if (superheroRepository.findById(id).isPresent()) {
-            Superhero superheroToUpdate = new Superhero();
-            superheroToUpdate.setId(superheroToUpdate.getId());
-            superheroToUpdate.setName(superheroToUpdate.getName());
-            superheroRepository.save(superheroToUpdate);
-            return "SuperheroManager.model.Superhero modified";
+            Optional<Superhero> superheroUpdate = superheroRepository.findById(id);
+            superheroUpdate.get().setName(superHeroUpdate.getName());
+            superheroRepository.save(superHeroUpdate);
+            return "Superhero modified";
         }
         return "Error! The superhoero doesn't exist";
     }

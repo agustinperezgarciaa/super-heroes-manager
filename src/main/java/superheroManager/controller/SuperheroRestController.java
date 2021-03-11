@@ -7,6 +7,9 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import superheroManager.annotations.LogExecutedTime;
+import superheroManager.exceptionHandler.RecordNotFoundException;
 import superheroManager.model.Superhero;
 import superheroManager.service.SuperheroService;
 
@@ -16,7 +19,7 @@ import superheroManager.service.SuperheroService;
  *
  */
 @RestController
-public class SuperheroRestController {
+public class SuperheroRestController extends ResponseEntityExceptionHandler {
 
     @Autowired
     private SuperheroService superheroService;
@@ -28,31 +31,40 @@ public class SuperheroRestController {
 //    }
 
     @GetMapping("/getHeroes")
+    @LogExecutedTime
     public ResponseEntity getHeroes() {
         List<Superhero> superheroes = superheroService.getHeroes();
+
         return ResponseEntity.ok(superheroes);
     }
 
     @GetMapping("/getHero")
-    public ResponseEntity getHeroesById(@RequestParam Long id) {
+    @LogExecutedTime
+    public ResponseEntity getHero(@RequestParam Long id) {
         Optional<Superhero> superheroe = superheroService.getSuperHero(id);
+        if (!superheroe.isPresent()) {
+            throw new RecordNotFoundException();
+        }
         return ResponseEntity.ok(superheroe);
     }
 
     @GetMapping("/getFilteredHeroes")
+    @LogExecutedTime
     public ResponseEntity getFilteredHeroes(@RequestParam String filter) {
         List<Superhero> superheroes = superheroService.filterHeroByName(filter);
         return ResponseEntity.ok(superheroes);
     }
 
-    @PutMapping("/updateHeroe")
-    public ResponseEntity getFilteredHeroes(@RequestParam Superhero superhero) {
+    @PutMapping("/updateHero")
+    @LogExecutedTime
+    public ResponseEntity updateHero(@RequestBody Superhero superhero) {
         String response = superheroService.updateSuperHero(superhero);
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/deleteHeroe")
-    public ResponseEntity getFilteredHeroes(@RequestParam Long id) {
+    @DeleteMapping("/deleteHero")
+    @LogExecutedTime
+    public ResponseEntity deleteHero(@RequestParam Long id) {
         String response = superheroService.deleteSuperHero(id);
         return ResponseEntity.ok(response);
     }
