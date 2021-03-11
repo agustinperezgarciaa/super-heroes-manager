@@ -36,7 +36,6 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
     @Cacheable("get-herores")
     public ResponseEntity getHeroes() {
         List<Superhero> superheroes = superheroService.getHeroes();
-
         return ResponseEntity.ok(superheroes);
     }
 
@@ -55,7 +54,6 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
     @LogExecutedTime
     @Cacheable("filter-hero")
     public ResponseEntity getFilteredHeroes(@RequestParam String filter) {
-        System.out.println("222");
         List<Superhero> superheroes = superheroService.filterHeroByName(filter);
         return ResponseEntity.ok(superheroes);
     }

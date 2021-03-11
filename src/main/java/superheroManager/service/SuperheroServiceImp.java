@@ -2,6 +2,7 @@ package superheroManager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import superheroManager.exceptionHandler.RecordNotFoundException;
 import superheroManager.model.Superhero;
 import superheroManager.repository.SuperheroRepository;
 
@@ -37,9 +38,9 @@ public class SuperheroServiceImp implements SuperheroService {
     public String deleteSuperHero(Long id) {
         if (superheroRepository.findById(id).isPresent()) {
             superheroRepository.deleteById(id);
-            return "SuperheroManager.model.Superhero deleted.";
+            return "Superhero deleted.";
         }
-        return "Error! The superhero doesn't exist";
+        throw new RecordNotFoundException();
     }
 
     public String updateSuperHero(Superhero superHeroUpdate) {
@@ -50,7 +51,7 @@ public class SuperheroServiceImp implements SuperheroService {
             superheroRepository.save(superHeroUpdate);
             return "Superhero modified";
         }
-        return "Error! The superhero doesn't exist";
+        throw new RecordNotFoundException();
     }
 
     private List<Superhero> getAllHeroes() {

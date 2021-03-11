@@ -13,7 +13,7 @@ public class ErrorResponse
 
     private String message;
     private List<String> details;
-
+//    private timestamp
     public String getMessage() {
         return message;
     }
@@ -25,7 +25,11 @@ public class ErrorResponse
     public List<String> getDetails() {
         return details;
     }
-
+//  "timestamp": "2021-03-11T23:34:03.202+00:00",
+//          "status": 403,
+//          "error": "Forbidden",
+//          "message": "",
+//          "path": "/deleteHero"
     public void setDetails(List<String> details) {
         this.details = details;
     }

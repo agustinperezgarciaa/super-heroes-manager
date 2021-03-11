@@ -29,4 +29,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
         ErrorResponse error = new ErrorResponse("RECORD_NOT_FOUND", details);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public final ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException ex,
+                                                                           WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("UNAUTHORIZED", details);
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
 }
