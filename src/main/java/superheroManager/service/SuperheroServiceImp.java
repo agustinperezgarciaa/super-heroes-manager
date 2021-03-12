@@ -7,9 +7,10 @@ import superheroManager.exceptionHandler.RecordNotFoundException;
 import superheroManager.model.Superhero;
 import superheroManager.repository.SuperheroRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SuperheroServiceImp implements SuperheroService {
@@ -19,12 +20,11 @@ public class SuperheroServiceImp implements SuperheroService {
 
     public List<Superhero> filterHeroByName(String nameFilter) {
         List<Superhero> superheroList = getAllHeroes();
-        List<Superhero> superheroListFiltered = new ArrayList<>();
-        for (Superhero superhero: superheroList) {
-            if (superhero.getName().toLowerCase().contains(nameFilter)) {
-                superheroListFiltered.add(superhero);
-            }
-        }
+        Superhero[] superheroArray = new Superhero[superheroList.size()];
+        superheroList.toArray(superheroArray);
+        List<Superhero> superheroListFiltered = Stream.of(superheroArray)
+                .filter(s -> s.getName().toLowerCase().contains(nameFilter))
+                .collect(Collectors.toList());
         return superheroListFiltered;
     }
 
