@@ -4,7 +4,7 @@ package superheroManager.dto;
  * @author Agustin Perez Garcia
  *
  */
-public class User {
+public class UserDTO {
 
     private String name;
 

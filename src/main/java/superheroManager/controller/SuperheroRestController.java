@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import superheroManager.annotations.LogExecutedTime;
+import superheroManager.cache.CacheActions;
+import superheroManager.dto.SuperheroDTO;
+import superheroManager.exceptionHandler.MissingParamException;
 import superheroManager.exceptionHandler.RecordNotFoundException;
 import superheroManager.model.Superhero;
 import superheroManager.service.SuperheroService;
@@ -25,52 +28,54 @@ public class SuperheroRestController extends ResponseEntityExceptionHandler {
     @Autowired
     private SuperheroService superheroService;
 
-//    @PostMapping("/createHero")
-//    public ResponseEntity createNewClient(@Valid @RequestBody SuperheroManager.model.Superhero superhero) {
-//        clientService.saveClient(client);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(client);
-//    }
+    @Autowired
+    private CacheActions cacheActions;
 
     @GetMapping("/getHeroes")
     @LogExecutedTime
-    @Cacheable("get-herores")
+    @Cacheable(cacheNames = "get-heroes")
     public ResponseEntity getHeroes() {
         List<Superhero> superheroes = superheroService.getHeroes();
         return ResponseEntity.ok(superheroes);
     }
 
-    @GetMapping("/getHero")
+    @GetMapping("/getHero/{id}")
     @LogExecutedTime
-    @Cacheable("get-hero")
-    public ResponseEntity getHero(@RequestParam Long id) {
-        Optional<Superhero> superheroe = superheroService.getSuperHero(id);
-        if (!superheroe.isPresent()) {
+    @Cacheable(cacheNames = "get-hero")
+        public ResponseEntity getHero(@PathVariable Long id) {
+        Optional<Superhero> superhero = superheroService.getSuperHero(id);
+        if (!superhero.isPresent()) {
             throw new RecordNotFoundException();
         }
-        return ResponseEntity.ok(superheroe);
+        return ResponseEntity.ok(superhero);
     }
 
     @GetMapping("/getFilteredHeroes")
     @LogExecutedTime
-    @Cacheable("filter-hero")
+    @Cacheable(cacheNames = "get-filtered-heroes")
     public ResponseEntity getFilteredHeroes(@RequestParam String filter) {
+        if (filter.isEmpty()) {
+            throw new MissingParamException("Filter param missing");
+        }
         List<Superhero> superheroes = superheroService.filterHeroByName(filter);
         return ResponseEntity.ok(superheroes);
     }
 
-    @PutMapping("/updateHero")
+    @PutMapping("/updateHero/{id}")
     @LogExecutedTime
-    @Cacheable("update-hero")
-    public ResponseEntity updateHero(@RequestBody Superhero superhero) {
-        String response = superheroService.updateSuperHero(superhero);
-        return ResponseEntity.ok(response);
+    @Cacheable(cacheNames = "update-hero")
+    public ResponseEntity updateHero(@PathVariable Long id, @RequestBody SuperheroDTO superhero) {
+        Superhero superheroUpdated = superheroService.updateSuperHero(id, superhero);
+        cacheActions.evictAllCaches();
+        return ResponseEntity.ok(superheroUpdated);
     }
 
-    @DeleteMapping("/deleteHero")
+    @DeleteMapping("/deleteHero/{id}")
     @LogExecutedTime
-    @Cacheable("delete-hero")
-    public ResponseEntity deleteHero(@RequestParam Long id) {
-        String response = superheroService.deleteSuperHero(id);
-        return ResponseEntity.ok(response);
+    @Cacheable(cacheNames = "delete-hero")
+    public ResponseEntity deleteHero(@PathVariable Long id) {
+        superheroService.deleteSuperHero(id);
+        cacheActions.evictAllCaches();
+        return ResponseEntity.ok().build();
     }
 }

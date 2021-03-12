@@ -25,12 +25,12 @@ import static org.mockito.Mockito.when;
 public class SuperheroServiceImpTest {
 
     @InjectMocks
-    private SuperheroServiceImp superHeroesServiceImp;
+    private SuperheroServiceImp superheroServiceImp;
 
     @Mock
     private SuperheroRepository superheroRepository;
 
-    private List<Superhero> superheroList = new ArrayList<Superhero>();
+    private List<Superhero> superheroList = new ArrayList<>();
 
     @Before
     public void preloadDate() {
@@ -43,35 +43,40 @@ public class SuperheroServiceImpTest {
     }
     @After
     public void cleanData() {
-        superheroList = new ArrayList<Superhero>();
+        superheroList = new ArrayList<>();
     }
 
     @Test
-    public void getValidFileredHeroByNameAllResults() {
+    public void getValidFilteredHeroByNameAllResults() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
-        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("man");
-        Assert.assertEquals(resultSuperHeroList.size(), 3);
+        List<Superhero> resultSuperHeroList = superheroServiceImp.filterHeroByName("man");
+        Assert.assertEquals(3, resultSuperHeroList.size());
+        Assert.assertEquals("Superman", resultSuperHeroList.get(0).getName());
+        Assert.assertEquals("Batman", resultSuperHeroList.get(1).getName());
+        Assert.assertEquals("Wonderwoman", resultSuperHeroList.get(2).getName());
+
     }
 
     @Test
-    public void getValidFileredHeroByNameUniqueResult() {
+    public void getValidFilteredHeroByNameUniqueResult() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
-        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("woman");
-        Assert.assertEquals(resultSuperHeroList.size(), 1);
+        List<Superhero> resultSuperHeroList = superheroServiceImp.filterHeroByName("woman");
+        Assert.assertEquals(1, resultSuperHeroList.size());
+        Assert.assertEquals("Wonderwoman", resultSuperHeroList.get(0).getName());
     }
 
     @Test
-    public void getValidFileredHeroByNameNoResult() {
+    public void getValidFilteredHeroByNameNoResult() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
-        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("ironman");
-        Assert.assertEquals(resultSuperHeroList.size(), 0);
+        List<Superhero> resultSuperHeroList = superheroServiceImp.filterHeroByName("ironman");
+        Assert.assertEquals(0, resultSuperHeroList.size());
     }
 
     @Test
-    public void getValidFileredHeroByNameUppercase() {
+    public void getValidFilteredHeroByNameUppercase() {
         when(superheroRepository.findAll()).thenReturn(superheroList);
-        List<Superhero> resultSuperHeroList = superHeroesServiceImp.filterHeroByName("bat");
-        Assert.assertEquals(resultSuperHeroList.size(), 1);
-        Assert.assertEquals(resultSuperHeroList.size(), 1);
+        List<Superhero> resultSuperHeroList = superheroServiceImp.filterHeroByName("bat");
+        Assert.assertEquals(1, resultSuperHeroList.size());
+        Assert.assertEquals("Batman", resultSuperHeroList.get(0).getName());
     }
 }

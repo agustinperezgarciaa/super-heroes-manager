@@ -1,14 +1,11 @@
 package superheroManager;
 
 import com.google.common.base.Predicates;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,9 +32,6 @@ import superheroManager.security.JWTAuthorizationFilter;
 @EnableCaching
 public class SuperheroManagerMainApp extends SpringBootServletInitializer {
 
-    @Value("${security.enabled}")
-    private boolean securityEnabled;
-
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SuperheroManagerMainApp.class, args);
     }
@@ -45,10 +39,10 @@ public class SuperheroManagerMainApp extends SpringBootServletInitializer {
     @Bean
     public Docket removeSwaggerErrorEntry() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(Predicates.not(PathSelectors.regex("/error.*")))
-                .build();
+            .select()
+            .apis(RequestHandlerSelectors.any())
+            .paths(Predicates.not(PathSelectors.regex("/error.*")))
+            .build();
     }
 
     @EnableWebSecurity
@@ -57,24 +51,21 @@ public class SuperheroManagerMainApp extends SpringBootServletInitializer {
         // to allow authUser
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            if (securityEnabled) {
-                http.csrf().disable()
-                        .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-                        .authorizeRequests()
-                        .antMatchers(HttpMethod.POST, "/authUser").permitAll()
-                        .anyRequest().authenticated();
-            }
+            http.csrf().disable()
+                .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/authUser").permitAll()
+                .anyRequest().authenticated();
         }
-
         // to allow swaggerDoc
         @Override
         public void configure(WebSecurity web) throws Exception {
             web.ignoring().antMatchers("/v2/api-docs",
-                    "/configuration/ui",
-                    "/swagger-resources/**",
-                    "/configuration/security",
-                    "/swagger-ui.html",
-                    "/webjars/**");
+                "/configuration/ui",
+                "/swagger-resources/**",
+                "/configuration/security",
+                "/swagger-ui.html",
+                "/webjars/**");
         }
     }
 }

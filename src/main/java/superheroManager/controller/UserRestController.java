@@ -8,7 +8,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import superheroManager.dto.User;
+import superheroManager.dto.UserDTO;
 import superheroManager.exceptionHandler.UnauthorizedException;
 import superheroManager.repository.UserRepository;
 
@@ -24,10 +24,10 @@ public class UserRestController {
     UserRepository userRepository;
 
     @PostMapping("authUser")
-    public User login(@RequestParam("user") String username, @RequestParam("password") String password) {
+    public UserDTO login(@RequestParam("user") String username, @RequestParam("password") String password) {
         validateUser(username, password);
         String token = getJWTToken(username);
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setName(username);
         user.setPassword(password);
         user.setToken(token);

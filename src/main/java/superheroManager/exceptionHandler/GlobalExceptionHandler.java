@@ -17,7 +17,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
     public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("SERVER_ERROR", details);
+        ErrorResponse error = new ErrorResponse("SERVER_ERROR", details, HttpStatus.INTERNAL_SERVER_ERROR.value());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                            WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("RECORD_NOT_FOUND", details);
+        ErrorResponse error = new ErrorResponse("RECORD_NOT_FOUND", details, HttpStatus.NOT_FOUND.value());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
@@ -35,7 +35,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                            WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
-        ErrorResponse error = new ErrorResponse("UNAUTHORIZED", details);
+        ErrorResponse error = new ErrorResponse("UNAUTHORIZED", details, HttpStatus.UNAUTHORIZED.value());
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(MissingParamException.class)
+    public final ResponseEntity<ErrorResponse> handleMissingParamException(UnauthorizedException ex,
+                                                                           WebRequest request) {
+        List<String> details = new ArrayList<>();
+        details.add(ex.getLocalizedMessage());
+        ErrorResponse error = new ErrorResponse("BAD_REQUEST", details, HttpStatus.BAD_REQUEST.value());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
